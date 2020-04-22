@@ -20,11 +20,13 @@ A Java version of Chrome Offline T-Rex Game. Some features is missing _(will be 
 
 ## Keybinds
 **Jump: `ARROW UP`, `SPACE`, `W`** <br/>
-**Crouch: `ARROW DOWN`, `S`**
+**Crouch: `ARROW DOWN`, `S`** <br/>
+**Debug: <code>`(backtick)</code>**
 
 ## Additional Information
 Possible creation of ".jar" file. Highest Scores will be stored in ".txt" file right next to ".jar" file
 
-### Arguments
-  - **-nodeath** ( Disables collisions )
-  - **-showhitbox** ( HitBoxes of Dino, Cactuses, Birds )
+### Debug
+  - Disables collisions
+  - Shows hitboxes of Dino, Cactuses, Birds
+  - Shows speed ( difficulty increase )

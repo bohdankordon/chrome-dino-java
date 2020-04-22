@@ -43,8 +43,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	private int GAME_STATE = GAME_STATE_START;
 	
 	// hitboxes of dino, enemies and ground
-	private boolean SHOW_HITBOXES;
-	private boolean COLLISIONS;
+	private boolean SHOW_HITBOXES = false;
+	private boolean COLLISIONS = true;
 	
 	// values to calculate waiting time at line 83
 	private final int FPS = 100;
@@ -105,14 +105,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		return GAME_STATE;
 	}
 
-	public void setSHOW_HITBOXES(boolean SHOW_HITBOXES) {
-		this.SHOW_HITBOXES = SHOW_HITBOXES;
-	}
-
-	public void setCOLLISIONS(boolean COLLISIONS) {
-		this.COLLISIONS = COLLISIONS;
-	}
-
 	// update all entities positions
 	private void updateFrame() {
 		switch (GAME_STATE) {
@@ -155,20 +147,19 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		}
 	}
 	
-	private void drawHitBoxes(Graphics g) {
+	private void drawDebugMenu(Graphics g) {
 		g.setColor(Color.RED);
 		g.drawLine(0, GROUND_Y, getWidth(), GROUND_Y);
 //		clouds.drawHitBox(g);
 		dino.drawHitBox(g);
 		eManager.drawHitBoxes(g);
+		String speedInfo = "SPEED_X: " + String.valueOf(Math.round(SPEED_X * 1000D) / 1000D);
+		g.drawString(speedInfo, (int)(SCREEN_WIDTH / 100), (int)(SCREEN_HEIGHT / 25));
 	}
 	
 	private void startScreen(Graphics g) {
 		land.draw(g);
 		dino.draw(g);
-//		g.setColor(new Color(246, 246, 246));
-//		g.fillRect((int)(Dino.X + dino.dinoJump.getWidth() + SCREEN_WIDTH / 50), 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-//		g.fillRect(0, 0, (int)(Dino.X - SCREEN_WIDTH / 50), SCREEN_HEIGHT);
 	}
 	
 	private void inProgressScreen(Graphics g) {
@@ -178,7 +169,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		dino.draw(g);
 		score.draw(g);
 		if(SHOW_HITBOXES)
-			drawHitBoxes(g);
+			drawDebugMenu(g);
 	}
 	
 	private void gameOverScreen(Graphics g) {
@@ -219,6 +210,16 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		case KeyEvent.VK_S:
 			if(dino.getDinoState() != DINO_JUMP && GAME_STATE == GAME_STATE_IN_PROGRESS)
 				dino.setDinoState(DINO_DOWN_RUN);
+			break;
+		case KeyEvent.VK_BACK_QUOTE:
+			if(SHOW_HITBOXES == false)
+				SHOW_HITBOXES = true;
+			else
+				SHOW_HITBOXES = false;
+			if(COLLISIONS == true)
+				COLLISIONS = false;
+			else
+				COLLISIONS = true;
 			break;
 		default:
 			break;
