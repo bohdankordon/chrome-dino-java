@@ -1,0 +1,4 @@
+result=21,date=20200420_144048,player=Dino
+result=58,date=20200420_144054,player=Dino
+result=328,date=20200420_144126,player=Dino
+result=367,date=20200422_130458,player=Dino
