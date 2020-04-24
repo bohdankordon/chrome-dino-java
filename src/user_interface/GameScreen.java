@@ -9,8 +9,6 @@ import static util.Resource.getImage;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -23,12 +21,12 @@ import misc.EnemyManager;
 import misc.SoundManager;
 
 @SuppressWarnings(value = { "serial" })
-public class GameScreen extends JPanel implements Runnable, KeyListener {
+public class GameScreen extends JPanel implements Runnable {
 
 	private Thread thread;
 	
-	private static final int GAME_STATE_START = 0;
-	private static final int GAME_STATE_IN_PROGRESS = 1;
+	public static final int GAME_STATE_START = 0;
+	public static final int GAME_STATE_IN_PROGRESS = 1;
 	public static final int GAME_STATE_OVER = 2;
 	
 	private static final int STARTING_SPEED_X = -5;
@@ -180,70 +178,46 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		g.drawImage(replayImage, SCREEN_WIDTH / 2 - replayImage.getWidth() / 2, SCREEN_HEIGHT / 2, null);
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-//		System.out.println("Key Typed");
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-//		System.out.println("Key Pressed");
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_SPACE:
-		case KeyEvent.VK_UP:
-		case KeyEvent.VK_W:
-			if(GAME_STATE == GAME_STATE_IN_PROGRESS) {
-				dino.jump();
-				dino.setDinoState(DINO_JUMP);
-			}
-			if(GAME_STATE == GAME_STATE_OVER) {
-				SPEED_X = STARTING_SPEED_X;
-				score.scoreReset();
-				eManager.clearEnemies();
-				dino.resetDino();
-				clouds.clearClouds();
-				land.resetLand();
-				GAME_STATE = GAME_STATE_IN_PROGRESS;
-			}
-			break;
-		case KeyEvent.VK_DOWN:
-		case KeyEvent.VK_S:
-			if(dino.getDinoState() != DINO_JUMP && GAME_STATE == GAME_STATE_IN_PROGRESS)
-				dino.setDinoState(DINO_DOWN_RUN);
-			break;
-		case KeyEvent.VK_BACK_QUOTE:
-			if(SHOW_HITBOXES == false)
-				SHOW_HITBOXES = true;
-			else
-				SHOW_HITBOXES = false;
-			if(COLLISIONS == true)
-				COLLISIONS = false;
-			else
-				COLLISIONS = true;
-			break;
-		default:
-			break;
+	public void pressUpAction() {
+		if(GAME_STATE == GAME_STATE_IN_PROGRESS) {
+			dino.jump();
+			dino.setDinoState(DINO_JUMP);
+		}
+		if(GAME_STATE == GAME_STATE_OVER) {
+			SPEED_X = STARTING_SPEED_X;
+			score.scoreReset();
+			eManager.clearEnemies();
+			dino.resetDino();
+			clouds.clearClouds();
+			land.resetLand();
+			GAME_STATE = GAME_STATE_IN_PROGRESS;
 		}
 	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-//		System.out.println("Key Released");
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_SPACE:
-		case KeyEvent.VK_UP:
-		case KeyEvent.VK_W:
-			if(GAME_STATE == GAME_STATE_START)
-				GAME_STATE = GAME_STATE_IN_PROGRESS;
-			break;
-		case KeyEvent.VK_DOWN:
-		case KeyEvent.VK_S:
-			if(dino.getDinoState() != DINO_JUMP && GAME_STATE == GAME_STATE_IN_PROGRESS)
-				dino.setDinoState(DINO_RUN);
-			break;
-		default:
-			break;
-		}
+	
+	public void releaseUpAction() {
+		if(GAME_STATE == GAME_STATE_START)
+			GAME_STATE = GAME_STATE_IN_PROGRESS;
+	}
+	
+	public void pressDownAction() {
+		if(dino.getDinoState() != DINO_JUMP && GAME_STATE == GAME_STATE_IN_PROGRESS)
+			dino.setDinoState(DINO_DOWN_RUN);
+	}
+	
+	public void releaseDownAction() {
+		if(dino.getDinoState() != DINO_JUMP && GAME_STATE == GAME_STATE_IN_PROGRESS)
+			dino.setDinoState(DINO_RUN);
+	}
+	
+	public void pressDebugAction() {
+		if(SHOW_HITBOXES == false)
+			SHOW_HITBOXES = true;
+		else
+			SHOW_HITBOXES = false;
+		if(COLLISIONS == true)
+			COLLISIONS = false;
+		else
+			COLLISIONS = true;
 	}
 	
 }
