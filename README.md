@@ -6,7 +6,7 @@
 ![in-game-screenshot-3](screenshots/screenshot-3.png)
 
 ## Description
-A Java version of Chrome Offline T-Rex Game. Some features is missing _(will be added soon!)_ like jump quick falling, changing jump speed, day/night cycle. Smooth gameplay on **100 fps**.
+A Java version of Chrome Offline T-Rex Game. Some features is missing _(will be added soon!)_ like jump quick falling, changing jump speed, day/night cycle. Game is running on smooth **100 fps**.
 
 ## Features
   - Dynamic Background
