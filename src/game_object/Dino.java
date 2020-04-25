@@ -11,6 +11,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import misc.Animation;
+import misc.Controls;
 import misc.SoundManager;
 
 public class Dino {
@@ -26,6 +27,12 @@ public class Dino {
 	public static final int DINO_JUMP = 2;
 	public static final int DINO_DEAD = 3;
 	
+	Controls controls;
+	
+	private double maxY;
+	private double highJumpMaxY;
+	private double lowJumpMaxY;
+	
 	private double y = 0;
 	// jumping speed
 	private double speedY = 0;
@@ -36,7 +43,8 @@ public class Dino {
 	private Animation dinoDownRun;
 	private SoundManager jumpSound;
 	
-	public Dino() {
+	public Dino(Controls controls) {
+		this.controls = controls;
 		dinoRun = new Animation(150);
 		dinoRun.addSprite(getImage("resources/dino-run-1.png"));
 		dinoRun.addSprite(getImage("resources/dino-run-2.png"));
@@ -48,6 +56,9 @@ public class Dino {
 		jumpSound = new SoundManager("resources/jump.wav");
 		jumpSound.startThread();
 		y = GROUND_Y - dinoJump.getHeight();
+		maxY = y;
+		highJumpMaxY = setJumpMaxY(GRAVITY);
+		lowJumpMaxY = setJumpMaxY(GRAVITY + GRAVITY / 2);
 		dinoState = DINO_JUMP;
 	}
 	
@@ -57,6 +68,24 @@ public class Dino {
 
 	public void setDinoState(int dinoState) {
 		this.dinoState = dinoState;
+	}
+	
+	public double setJumpMaxY(double gravity) {
+		speedY = SPEED_Y;
+		y += speedY;
+		double jumpMaxY = y;
+		while(true) {
+			speedY += gravity;
+			y += speedY;
+			if(y < jumpMaxY)
+				jumpMaxY = y;
+			if(y + speedY >= GROUND_Y - dinoRun.getSprite().getHeight()) {
+				speedY = 0;
+				y = GROUND_Y - dinoRun.getSprite().getHeight();
+				break;
+			}
+		}
+		return jumpMaxY;
 	}
 
 	public Rectangle getHitBox() {
@@ -74,11 +103,15 @@ public class Dino {
 	}
 	
 	public void updatePosition() {
+		if(y < maxY)
+			maxY = y;
+		System.out.println(controls.isPressedUp());
 		dinoRun.updateSprite();
 		dinoDownRun.updateSprite();
 		switch (dinoState) {
 		case DINO_RUN:
 			y = GROUND_Y - dinoRun.getSprite().getHeight();
+			maxY = y;
 			break;
 		case DINO_DOWN_RUN:
 			y = GROUND_Y - dinoDownRun.getSprite().getHeight();
@@ -88,8 +121,16 @@ public class Dino {
 				speedY = 0;
 				y = GROUND_Y - dinoRun.getSprite().getHeight();
 				dinoState = DINO_RUN;
-			} else {
+			} else if(controls.isPressedUp()) {
 				speedY += GRAVITY;
+				y += speedY;
+			} else {
+				if(maxY <= lowJumpMaxY - (lowJumpMaxY - highJumpMaxY) / 2)
+					speedY += GRAVITY;
+				else
+					speedY += GRAVITY + GRAVITY / 2;
+				if(controls.isPressedDown())
+					speedY += GRAVITY;
 				y += speedY;
 			}
 			break;

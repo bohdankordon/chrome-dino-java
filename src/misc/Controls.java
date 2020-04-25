@@ -34,6 +34,9 @@ public class Controls {
 	public JLabel pressDebug = new JLabel();
 //	public JLabel releaseDebug = new JLabel();
 	
+	private boolean isPressedUp = false;
+	private boolean isPressedDown = false;
+	
 	GameScreen gameScreen;
 	
 	public Controls(GameScreen gameScreen) {
@@ -68,12 +71,20 @@ public class Controls {
 		pressDebug.getActionMap().put(DEBUG_MENU, new PressDebug());
 	}
 	
-	
+	public boolean isPressedUp() {
+		return isPressedUp;
+	}
+
+	public boolean isPressedDown() {
+		return isPressedDown;
+	}
+
 	private class PressUpAction extends AbstractAction {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 //			System.out.println("up");
 			gameScreen.pressUpAction();
+			isPressedUp = true;
 		}
 	}
 	
@@ -82,6 +93,7 @@ public class Controls {
 		public void actionPerformed(ActionEvent e) {
 //			System.out.println("released up");
 			gameScreen.releaseUpAction();
+			isPressedUp = false;
 		}
 	}
 	
@@ -90,6 +102,7 @@ public class Controls {
 		public void actionPerformed(ActionEvent e) {
 //			System.out.println("down");
 			gameScreen.pressDownAction();
+			isPressedDown = true;
 		}
 	}
 	
@@ -98,6 +111,7 @@ public class Controls {
 		public void actionPerformed(ActionEvent e) {
 //			System.out.println("released down");
 			gameScreen.releaseDownAction();
+			isPressedDown = false;
 		}
 	}
 	

@@ -17,6 +17,7 @@ import game_object.Clouds;
 import game_object.Dino;
 import game_object.Land;
 import game_object.Score;
+import misc.Controls;
 import misc.EnemyManager;
 import misc.SoundManager;
 
@@ -32,10 +33,10 @@ public class GameScreen extends JPanel implements Runnable {
 	private static final int STARTING_SPEED_X = -5;
 	// speed is constantly increasing by that value
 	private static final double DIFFICULTY_INC = -0.0002;
-	public static final double GRAVITY = 0.5;
+	public static final double GRAVITY = 0.4;
 	public static final int GROUND_Y = 280;
 	// speed of dino jumping
-	public static final double SPEED_Y = -12.5;
+	public static final double SPEED_Y = -12;
 	
 	private double SPEED_X = STARTING_SPEED_X;
 	private int GAME_STATE = GAME_STATE_START;
@@ -48,6 +49,7 @@ public class GameScreen extends JPanel implements Runnable {
 	private final int FPS = 100;
 	private final int NS_PER_FRAME = 1_000_000_000 / FPS;
 	
+	private Controls controls;
 	private Score score;
 	private Dino dino;
 	private Land land;
@@ -57,8 +59,14 @@ public class GameScreen extends JPanel implements Runnable {
 	
 	public GameScreen() {
 		thread = new Thread(this);
+		controls = new Controls(this);
+		super.add(controls.pressUp);
+		super.add(controls.releaseUp);
+		super.add(controls.pressDown);
+		super.add(controls.releaseDown);
+		super.add(controls.pressDebug);
 		score = new Score(this);
-		dino = new Dino();
+		dino = new Dino(controls);
 		land = new Land(this);
 		clouds = new Clouds(this);
 		eManager = new EnemyManager(this);
