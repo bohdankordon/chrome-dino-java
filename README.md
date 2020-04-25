@@ -6,21 +6,23 @@
 ![in-game-screenshot-3](screenshots/screenshot-3.png)
 
 ## Description
-A Java version of Chrome Offline T-Rex Game. Some features is missing _(will be added soon!)_ like jump quick falling, changing jump speed, day/night cycle. Game is running on smooth **100 fps**.
+A Java version of Chrome Offline T-Rex Game. Some features not affecting gameplay is missing _(will be added soon!)_. Game is running on smooth **100 fps**.
 
 ## Features
   - Dynamic Background
   - Infinite Gameplay
   - Progressive Difficulty
   - Obstacles: Cactuses, Birds(Pterodactyl)
-  - Jump / Crouch
+  - Jump / Duck
   - Sounds
   - Score & High Score _( File R/W )_
+  - Dynamic jump height based on key holding time
+  - Quick fall, pressed duck key in midair will drop Dino faster
   - **MORE SOON**
 
 ## Keybinds
 **Jump: `ARROW UP`, `SPACE`, `W`** <br/>
-**Crouch: `ARROW DOWN`, `S`** <br/>
+**Duck: `ARROW DOWN`, `S`** <br/>
 **Debug: <code>`(backtick)</code>**
 
 ## Additional Information
