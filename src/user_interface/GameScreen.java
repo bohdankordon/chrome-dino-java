@@ -32,14 +32,13 @@ public class GameScreen extends JPanel implements Runnable {
 	public static final int GROUND_Y = 280;
 	public static final double SPEED_Y = -12;
 	
-	private double speedX = STARTING_SPEED_X;
-	private GameState gameState = GameState.GAME_STATE_START;
-	
-	private boolean showHitboxes = false;
-	private boolean collisions = true;
-	
 	private final int FPS = 100;
 	private final int NS_PER_FRAME = 1_000_000_000 / FPS;
+	
+	private double speedX = STARTING_SPEED_X;
+	private GameState gameState = GameState.GAME_STATE_START;	
+	private boolean showHitboxes = false;
+	private boolean collisions = true;
 	
 	private Controls controls;
 	private Score score;
@@ -59,6 +58,8 @@ public class GameScreen extends JPanel implements Runnable {
 		super.add(controls.releaseDown);
 		super.add(controls.pressDebug);
 //		super.add(controls.releaseDebug);
+		super.add(controls.pressPause);
+//		super.add(controls.releaseP);
 		cManager = new ControlsManager(controls, this);
 		score = new Score(this);
 		dino = new Dino(controls);
@@ -142,6 +143,9 @@ public class GameScreen extends JPanel implements Runnable {
 		case GAME_STATE_OVER:
 			gameOverScreen(g);
 			break;
+		case GAME_STATE_PAUSED:
+			pausedScreen(g);
+			break;
 		default:
 			break;
 		}
@@ -178,6 +182,12 @@ public class GameScreen extends JPanel implements Runnable {
 		BufferedImage replayImage = getImage("resources/replay.png");
 		g.drawImage(gameOverImage, SCREEN_WIDTH / 2 - gameOverImage.getWidth() / 2, SCREEN_HEIGHT / 2 - gameOverImage.getHeight() * 2, null);
 		g.drawImage(replayImage, SCREEN_WIDTH / 2 - replayImage.getWidth() / 2, SCREEN_HEIGHT / 2, null);
+	}
+	
+	private void pausedScreen(Graphics g) {
+		inProgressScreen(g);
+		BufferedImage pausedImage = getImage("resources/paused.png");
+		g.drawImage(pausedImage, SCREEN_WIDTH / 2 - pausedImage.getWidth() / 2, SCREEN_HEIGHT / 2 - pausedImage.getHeight(), null);
 	}
 	
 	public void pressUpAction() {
@@ -220,6 +230,13 @@ public class GameScreen extends JPanel implements Runnable {
 			collisions = false;
 		else
 			collisions = true;
+	}
+	
+	public void pressPauseAction() {
+		if(gameState == GameState.GAME_STATE_IN_PROGRESS)
+			gameState = GameState.GAME_STATE_PAUSED;
+		else
+			gameState = GameState.GAME_STATE_IN_PROGRESS;
 	}
 	
 }

@@ -32,7 +32,7 @@ public class Clouds {
 	// number of max clouds on screen
 	private static final int CLOUDS_AMOUNT = 5;
 	// chance of getting cloud
-	private static final double CLOUD_PERCENTAGE = 0.7;
+	private static final double CLOUD_PERCENTAGE = 0.4;
 	
 	private GameScreen gameScreen;
 	private Set<Cloud> clouds;
