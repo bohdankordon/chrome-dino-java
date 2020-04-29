@@ -19,24 +19,24 @@ public class Controls {
 	private static final String S_DOWN = "S_DOWN";
 	private static final String SPACE_UP = "SPACE_UP";
 	private static final String DEBUG_MENU = "DEBUG_MENU";
+	private static final String P_PAUSE = "P";
+	private static final String ESCAPE_PAUSE = "ESCAPE";
 	
 	private static final String RELEASED_UP = "RELEASED_UP";
 	private static final String RELEASED_DOWN = "RELEASED_DOWN";
 	private static final String RELEASED_W_UP = "RELEASED_W_UP";
 	private static final String RELEASED_S_DOWN = "RELEASED_S_DOWN";
 	private static final String RELEASED_SPACE_UP = "RELEASED_SPACE_UP";
-//	private static final String RELEASED_DEBUG_MENU = "RELEASED_DEBUG_MENU";
 	
 	public JLabel pressUp = new JLabel();
 	public JLabel releaseUp = new JLabel();
 	public JLabel pressDown = new JLabel();
 	public JLabel releaseDown = new JLabel();
 	public JLabel pressDebug = new JLabel();
-//	public JLabel releaseDebug = new JLabel();
+	public JLabel pressPause = new JLabel();
 	
 	private boolean isPressedUp = false;
 	private boolean isPressedDown = false;
-//	private boolean isPressedDebug = false;
 	
 	GameScreen gameScreen;
 	
@@ -69,9 +69,13 @@ public class Controls {
 		releaseUp.getActionMap().put(RELEASED_SPACE_UP, new ReleaseUpAction());
 		// PRESS RELEASE BACKTICK //
 		pressDebug.getInputMap(FOCUS_STATE).put(KeyStroke.getKeyStroke("BACK_QUOTE"), DEBUG_MENU);
-		pressDebug.getActionMap().put(DEBUG_MENU, new PressDebug());
-//		releaseDebug.getInputMap(FOCUS_STATE).put(KeyStroke.getKeyStroke("released BACK_QUOTE"), RELEASED_DEBUG_MENU);
-//		releaseDebug.getActionMap().put(RELEASED_DEBUG_MENU, new ReleaseDebug());
+		pressDebug.getActionMap().put(DEBUG_MENU, new PressDebugAction());
+		// PRESS RELEASE P //
+		pressPause.getInputMap(FOCUS_STATE).put(KeyStroke.getKeyStroke("P"), P_PAUSE);
+		pressPause.getActionMap().put(P_PAUSE, new PressPauseAction());
+		// PRESS RELEASE ESCAPE //
+		pressPause.getInputMap(FOCUS_STATE).put(KeyStroke.getKeyStroke("ESCAPE"), ESCAPE_PAUSE);
+		pressPause.getActionMap().put(ESCAPE_PAUSE, new PressPauseAction());
 	}
 	
 	public boolean isPressedUp() {
@@ -81,10 +85,6 @@ public class Controls {
 	public boolean isPressedDown() {
 		return isPressedDown;
 	}
-	
-//	public boolean isPressedDebug() {
-//		return isPressedDebug;
-//	}
 
 	private class PressUpAction extends AbstractAction {
 		@Override
@@ -120,7 +120,7 @@ public class Controls {
 		}
 	}
 	
-	private class PressDebug extends AbstractAction {
+	private class PressDebugAction extends AbstractAction {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 //			System.out.println("press debug");
@@ -128,12 +128,12 @@ public class Controls {
 		}
 	}
 	
-//	private class ReleaseDebug extends AbstractAction {
-//		@Override
-//		public void actionPerformed(ActionEvent e) {
-////			System.out.println("release debug");
-//			isPressedDebug = false;
-//		}
-//	}
+	private class PressPauseAction extends AbstractAction {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+//			System.out.println("press pause");
+			gameScreen.pressPauseAction();
+		}
+	}
 	
 }
