@@ -36,6 +36,7 @@ public class Controls {
 	
 	private boolean isPressedUp = false;
 	private boolean isPressedDown = false;
+//	private boolean isPressedDebug = false;
 	
 	GameScreen gameScreen;
 	
@@ -69,6 +70,8 @@ public class Controls {
 		// PRESS RELEASE BACKTICK //
 		pressDebug.getInputMap(FOCUS_STATE).put(KeyStroke.getKeyStroke("BACK_QUOTE"), DEBUG_MENU);
 		pressDebug.getActionMap().put(DEBUG_MENU, new PressDebug());
+//		releaseDebug.getInputMap(FOCUS_STATE).put(KeyStroke.getKeyStroke("released BACK_QUOTE"), RELEASED_DEBUG_MENU);
+//		releaseDebug.getActionMap().put(RELEASED_DEBUG_MENU, new ReleaseDebug());
 	}
 	
 	public boolean isPressedUp() {
@@ -78,12 +81,15 @@ public class Controls {
 	public boolean isPressedDown() {
 		return isPressedDown;
 	}
+	
+//	public boolean isPressedDebug() {
+//		return isPressedDebug;
+//	}
 
 	private class PressUpAction extends AbstractAction {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 //			System.out.println("up");
-			gameScreen.pressUpAction();
 			isPressedUp = true;
 		}
 	}
@@ -101,7 +107,6 @@ public class Controls {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 //			System.out.println("down");
-			gameScreen.pressDownAction();
 			isPressedDown = true;
 		}
 	}
@@ -118,9 +123,17 @@ public class Controls {
 	private class PressDebug extends AbstractAction {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//			System.out.println("debug");
+//			System.out.println("press debug");
 			gameScreen.pressDebugAction();
 		}
 	}
+	
+//	private class ReleaseDebug extends AbstractAction {
+//		@Override
+//		public void actionPerformed(ActionEvent e) {
+////			System.out.println("release debug");
+//			isPressedDebug = false;
+//		}
+//	}
 	
 }

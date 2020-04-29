@@ -1,6 +1,5 @@
 package game_object;
 
-import misc.SoundManager;
 import user_interface.GameScreen;
 
 import static user_interface.GameScreen.GAME_STATE_OVER;
@@ -22,6 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import manager.SoundManager;
 
 public class Score {
 	
@@ -112,17 +113,19 @@ public class Score {
 				file = new File(ClassLoader.getSystemClassLoader().getResource("").getPath() + scoreFileName);
 			else
 				file = scoreFile;
-			try(BufferedReader br =  new BufferedReader(new FileReader(file))) {
-				while((line = br.readLine()) != null) {
-					Matcher m = Pattern.compile("result=(\\d+),date=([\\d_]+),player=(\\w+)").matcher(line);
-					if(m.find()) {
-						if(Integer.parseInt(m.group(1)) > hiScore)
+			if(file.exists()) {				
+				try(BufferedReader br =  new BufferedReader(new FileReader(file))) {
+					while((line = br.readLine()) != null) {
+						Matcher m = Pattern.compile("result=(\\d+),date=([\\d_]+),player=(\\w+)").matcher(line);
+						if(m.find()) {
+							if(Integer.parseInt(m.group(1)) > hiScore)
 								hiScore = Integer.parseInt(m.group(1));
 //						System.out.printf("result = %s date = %s player = %s\n", m.group(1), m.group(2), m.group(3));					
-					}					
+						}					
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			} catch (IOException e) {
-			    e.printStackTrace();
 			}
 		} else
 			hiScore = (int)score;

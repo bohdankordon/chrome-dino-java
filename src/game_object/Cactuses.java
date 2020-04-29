@@ -1,6 +1,5 @@
 package game_object;
 
-import misc.EnemyManager;
 import user_interface.GameScreen;
 
 import static user_interface.GameScreen.GROUND_Y;
@@ -14,6 +13,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import manager.EnemyManager;
 
 public class Cactuses {
 	

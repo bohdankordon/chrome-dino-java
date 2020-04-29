@@ -10,9 +10,9 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import manager.SoundManager;
 import misc.Animation;
 import misc.Controls;
-import misc.SoundManager;
 
 public class Dino {
 	
@@ -105,7 +105,6 @@ public class Dino {
 	public void updatePosition() {
 		if(y < maxY)
 			maxY = y;
-		System.out.println(controls.isPressedUp());
 		dinoRun.updateSprite();
 		dinoDownRun.updateSprite();
 		switch (dinoState) {

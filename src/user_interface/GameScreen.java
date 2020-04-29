@@ -10,16 +10,16 @@ import static util.Resource.getImage;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-
 import javax.swing.JPanel;
 
 import game_object.Clouds;
 import game_object.Dino;
 import game_object.Land;
 import game_object.Score;
+import manager.ControlsManager;
+import manager.EnemyManager;
+import manager.SoundManager;
 import misc.Controls;
-import misc.EnemyManager;
-import misc.SoundManager;
 
 @SuppressWarnings(value = { "serial" })
 public class GameScreen extends JPanel implements Runnable {
@@ -56,6 +56,7 @@ public class GameScreen extends JPanel implements Runnable {
 	private Clouds clouds;
 	private EnemyManager eManager;
 	private SoundManager gameOverSound;
+	private ControlsManager cManager;;
 	
 	public GameScreen() {
 		thread = new Thread(this);
@@ -65,6 +66,8 @@ public class GameScreen extends JPanel implements Runnable {
 		super.add(controls.pressDown);
 		super.add(controls.releaseDown);
 		super.add(controls.pressDebug);
+//		super.add(controls.releaseDebug);
+		cManager = new ControlsManager(controls, this);
 		score = new Score(this);
 		dino = new Dino(controls);
 		land = new Land(this);
@@ -84,13 +87,13 @@ public class GameScreen extends JPanel implements Runnable {
 		long prevFrameTime = System.nanoTime();
 		int waitingTime = 0;
 		while(true) {
+			cManager.update();
 			updateFrame();
 			repaint();
 			waitingTime = (int)((NS_PER_FRAME - (System.nanoTime() - prevFrameTime)) / 1_000_000);
 			if(waitingTime < 0)
 				waitingTime = 1;
 			SoundManager.WAITING_TIME = waitingTime;
-//			System.out.println(SPEED_X);
 			// little pause to not start new game if you are spamming your keys
 			if(GAME_STATE == GAME_STATE_OVER)
 				waitingTime = 1000;
@@ -185,12 +188,17 @@ public class GameScreen extends JPanel implements Runnable {
 		g.drawImage(gameOverImage, SCREEN_WIDTH / 2 - gameOverImage.getWidth() / 2, SCREEN_HEIGHT / 2 - gameOverImage.getHeight() * 2, null);
 		g.drawImage(replayImage, SCREEN_WIDTH / 2 - replayImage.getWidth() / 2, SCREEN_HEIGHT / 2, null);
 	}
-
+	
 	public void pressUpAction() {
 		if(GAME_STATE == GAME_STATE_IN_PROGRESS) {
 			dino.jump();
 			dino.setDinoState(DINO_JUMP);
 		}
+	}
+	
+	public void releaseUpAction() {
+		if(GAME_STATE == GAME_STATE_START)
+			GAME_STATE = GAME_STATE_IN_PROGRESS;
 		if(GAME_STATE == GAME_STATE_OVER) {
 			SPEED_X = STARTING_SPEED_X;
 			score.scoreReset();
@@ -200,11 +208,6 @@ public class GameScreen extends JPanel implements Runnable {
 			land.resetLand();
 			GAME_STATE = GAME_STATE_IN_PROGRESS;
 		}
-	}
-	
-	public void releaseUpAction() {
-		if(GAME_STATE == GAME_STATE_START)
-			GAME_STATE = GAME_STATE_IN_PROGRESS;
 	}
 	
 	public void pressDownAction() {

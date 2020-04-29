@@ -1,4 +1,4 @@
-package misc;
+package manager;
 
 import static util.Resource.getSound;
 
