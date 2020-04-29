@@ -21,7 +21,7 @@ public class Dino {
 	private static final int[] HITBOX_DOWN_RUN = {24, 8, -60, -24};
 	
 	public static final double X = 120;
-	// states of dino
+	
 	public static final int DINO_RUN = 0;
 	public static final int DINO_DOWN_RUN = 1;
 	public static final int DINO_JUMP = 2;
@@ -34,7 +34,6 @@ public class Dino {
 	private double lowJumpMaxY;
 	
 	private double y = 0;
-	// jumping speed
 	private double speedY = 0;
 	private int dinoState;
 	private BufferedImage dinoJump;
@@ -88,7 +87,7 @@ public class Dino {
 		return jumpMaxY;
 	}
 
-	public Rectangle getHitBox() {
+	public Rectangle getHitbox() {
 		switch (dinoState) {
 		case DINO_RUN:
 		case DINO_JUMP:
@@ -177,9 +176,9 @@ public class Dino {
 		}
 	}
 	
-	public void drawHitBox(Graphics g) {
+	public void drawHitbox(Graphics g) {
 		g.setColor(Color.GREEN);
-		g.drawRect(getHitBox().x, getHitBox().y, getHitBox().width, getHitBox().height);
+		g.drawRect(getHitbox().x, getHitbox().y, getHitbox().width, getHitbox().height);
 	}
 	
 }

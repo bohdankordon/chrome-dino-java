@@ -44,9 +44,10 @@ public class Score {
 	private File scoreFile;
 	private BufferedImage hi;
 	private BufferedImage numbers;
+	private SoundManager scoreUpSound;
+	
 	private double score;
 	private int hiScore;
-	private SoundManager scoreUpSound;
 	
 	public Score(GameScreen gameScreen) {
 		this.gameScreen = gameScreen;
@@ -147,10 +148,9 @@ public class Score {
 		int scoreArray[] = scoreToArray(score);
 		for(int i = 0; i < SCORE_LENGTH; i++) {
 			// this if needed to make blinking animation when score increased by 100
-			if((!((int)score >= 12 && (int)score % 100 <= 12) || (int)score % 3 == 0) || gameScreen.getGAME_STATE() == GAME_STATE_OVER)
+			if((!((int)score >= 12 && (int)score % 100 <= 12) || (int)score % 3 == 0) || gameScreen.getGameState() == GAME_STATE_OVER)
 				g2d.drawImage(cropImage(numbers, scoreArray[SCORE_LENGTH - i - 1]), CURRENT_SCORE_X + i * NUMBER_WIDTH, SCORE_Y, null);
 		}
-		// showing best score from read file or after game ended
 		if(hiScore > 0) {
 			int hiScoreArray[] = scoreToArray(hiScore);
 			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));

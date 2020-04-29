@@ -18,7 +18,6 @@ import manager.EnemyManager;
 
 public class Birds {
 	
-	// class for single bird
 	private class Bird {
 		
 		private double x;
@@ -39,7 +38,7 @@ public class Birds {
 	// numbers to calculate hitboxes of bird with wings pointing up and down
 	private static final int[] HITBOX_WINGS_UP = {20, 4, -40, -20};
 	private static final int[] HITBOX_WINGS_DOWN = {20, 4, -40, -28};
-	// value to check sprite at line 97 and 100
+	// value to check current sprite
 	private final int WINGS_DOWN_HEIGHT = getImage("resources/bird-fly-1.png").getHeight();
 	
 	private EnemyManager eManager;
@@ -56,8 +55,8 @@ public class Birds {
 	public void updatePosition() {
 		for(Iterator<Bird> i = birds.iterator(); i.hasNext();) {
 			Bird bird = i.next();
-			// divided by 5 and summed to make clouds slower than land and other entities
-			bird.x += (gameScreen.getSPEED_X() + gameScreen.getSPEED_X() / 5);
+			// to make birds a bit faster
+			bird.x += (gameScreen.getSpeedX() + gameScreen.getSpeedX() / 5);
 			bird.birdFly.updateSprite();
 		}
 	}
@@ -65,7 +64,7 @@ public class Birds {
 	public boolean spaceAvailable() {
 		for(Iterator<Bird> i = birds.iterator(); i.hasNext();) {
 			Bird bird = i.next();
-			if(SCREEN_WIDTH - (bird.x + bird.birdFly.getSprite().getWidth()) < eManager.getDISTANCE_BETWEEN_ENEMIES()) {
+			if(SCREEN_WIDTH - (bird.x + bird.birdFly.getSprite().getWidth()) < eManager.getDistanceBetweenEnemies()) {
 				return false;
 			}
 		}
@@ -73,7 +72,7 @@ public class Birds {
 	}
 	
 	public boolean createBird() { 
-		if(Math.random() * 100 < eManager.getBIRDS_PERCENTAGE()) {
+		if(Math.random() * 100 < eManager.getBirdsPercentage()) {
 			Animation birdFly = new Animation(400);
 			birdFly.addSprite(getImage("resources/bird-fly-1.png"));
 			birdFly.addSprite(getImage("resources/bird-fly-2.png"));
@@ -86,15 +85,14 @@ public class Birds {
 	public boolean isCollision(Rectangle dinoHitBox) {
 		for(Iterator<Bird> i = birds.iterator(); i.hasNext();) {
 			Bird bird = i.next();
-			Rectangle birdHitBox = getHitBox(bird);
+			Rectangle birdHitBox = getHitbox(bird);
 			if(birdHitBox.intersects(dinoHitBox))
 				return true;
-//				System.out.println("collision");
 		}
 		return false;
 	}
 	
-	private Rectangle getHitBox(Bird bird) {
+	private Rectangle getHitbox(Bird bird) {
 		// checking here which sprite is currently being used to calculate hitbox
 		return new Rectangle((int)bird.x + HITBOX_WINGS_UP[0], 
 				bird.birdFly.getSprite().getHeight() < WINGS_DOWN_HEIGHT ? bird.y + HITBOX_WINGS_UP[1] : 
@@ -116,11 +114,11 @@ public class Birds {
 		}
 	}
 	
-	public void drawHitBox(Graphics g) {
+	public void drawHitbox(Graphics g) {
 		g.setColor(Color.RED);
 		for(Iterator<Bird> i = birds.iterator(); i.hasNext();) {
 			Bird bird = (Bird)i.next();
-			Rectangle birdHitBox = getHitBox(bird);
+			Rectangle birdHitBox = getHitbox(bird);
 			g.drawRect(birdHitBox.x, birdHitBox.y, (int)birdHitBox.getWidth(), (int)birdHitBox.getHeight());
 		}
 	}

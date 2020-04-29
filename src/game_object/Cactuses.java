@@ -18,7 +18,6 @@ import manager.EnemyManager;
 
 public class Cactuses {
 	
-	// class for single cactus
 	private class Cactus {
 		
 		private BufferedImage cactusImage;
@@ -54,18 +53,17 @@ public class Cactuses {
 	public void updatePosition() {
 		for(Iterator<Cactus> i = cactuses.iterator(); i.hasNext();) {
 			Cactus cactus = i.next();
-			cactus.x += Math.round(gameScreen.getSPEED_X() * 100d) / 100d;
+			cactus.x += Math.round(gameScreen.getSpeedX() * 100d) / 100d;
 			if((int)cactus.x + cactus.cactusImage.getWidth() < 0) {
 				i.remove();
 			}
 		}
 	}
 	
-	// is enough space for next enemy
 	public boolean spaceAvailable() {
 		for(Iterator<Cactus> i = cactuses.iterator(); i.hasNext();) {
 			Cactus cactus = i.next();
-			if(SCREEN_WIDTH - (cactus.x + cactus.cactusImage.getWidth()) < eManager.getDISTANCE_BETWEEN_ENEMIES()) {
+			if(SCREEN_WIDTH - (cactus.x + cactus.cactusImage.getWidth()) < eManager.getDistanceBetweenEnemies()) {
 				return false;
 			}
 		}
@@ -73,7 +71,7 @@ public class Cactuses {
 	}
 	
 	public boolean createCactuses() {
-		if(Math.random() * 100 < eManager.getCACTUSES_PERCENTAGE()) {
+		if(Math.random() * 100 < eManager.getCactusesPercentage()) {
 			// Math random to get number of cactuses in a group
 			for(int i = 0, numberOfCactuses = (int)(Math.random() * MAX_CACTUS_GROUP + 1); i < numberOfCactuses; i++) {
 				BufferedImage cactusImage = getImage("resources/cactus-" + (int)(Math.random() * CACTUSES_AMOUNT + 1) + ".png");
@@ -93,15 +91,14 @@ public class Cactuses {
 	public boolean isCollision(Rectangle dinoHitBox) {
 		for(Iterator<Cactus> i = cactuses.iterator(); i.hasNext();) {
 			Cactus cactus = i.next();
-			Rectangle cactusHitBox = getHitBox(cactus);
+			Rectangle cactusHitBox = getHitbox(cactus);
 			if(cactusHitBox.intersects(dinoHitBox))
 				return true;
-//				System.out.println("collision");
 		}
 		return false;
 	}
 	
-	private Rectangle getHitBox(Cactus cactus) {
+	private Rectangle getHitbox(Cactus cactus) {
 		// weird calculation by its working as needed
 		// basically i make it thinner from left and right and shorter to match it perfectly
 		// enable hitboxes in GameScreen to see it
@@ -122,11 +119,11 @@ public class Cactuses {
 		}
 	}
 	
-	public void drawHitBox(Graphics g) {
+	public void drawHitbox(Graphics g) {
 		g.setColor(Color.RED);
 		for(Iterator<Cactus> i = cactuses.iterator(); i.hasNext();) {
 			Cactus cactus = i.next();
-			Rectangle cactusHitBox = getHitBox(cactus);
+			Rectangle cactusHitBox = getHitbox(cactus);
 			g.drawRect(cactusHitBox.x, cactusHitBox.y, (int)cactusHitBox.getWidth(), (int)cactusHitBox.getHeight());
 		}
 	}

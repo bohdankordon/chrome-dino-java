@@ -11,19 +11,15 @@ public class EnemyManager {
 	
 	// value by which chance of creating new enemy increasing
 	private static final double PERCENTAGE_INC = 0.0001;
-	// distance between enemies
-	private static final double DISTANCE_DESC = -0.005;
-	// min distance
+	private static final double DISTANCE_DEC = -0.005;
 	private static final int MINIMUM_DISTANCE = 250;
 	
 	// number of possible enemies (cactus, birds)
 	private static final int ENEMY_TYPES = 2;
 	
-	// starting distance between enemies
-	private double DISTANCE_BETWEEN_ENEMIES = 750;
-	// staring chance of creating new enemy
-	private double CACTUSES_PERCENTAGE = 2;
-	private double BIRDS_PERCENTAGE = 1;
+	private double distanceBetweenEnemies = 750;
+	private double cactusesPercentage = 2;
+	private double birdsPercentage = 1;
 	
 	private Cactuses cactuses;
 	private Birds birds;
@@ -33,24 +29,23 @@ public class EnemyManager {
 		birds = new Birds(gameScreen, this);
 	}
 	
-	public double getDISTANCE_BETWEEN_ENEMIES() {
-		return DISTANCE_BETWEEN_ENEMIES;
+	public double getDistanceBetweenEnemies() {
+		return distanceBetweenEnemies;
 	}
 
-	public double getCACTUSES_PERCENTAGE() {
-		return CACTUSES_PERCENTAGE;
+	public double getCactusesPercentage() {
+		return cactusesPercentage;
 	}
 
-	public double getBIRDS_PERCENTAGE() {
-		return BIRDS_PERCENTAGE;
+	public double getBirdsPercentage() {
+		return birdsPercentage;
 	}
 
 	public void updatePosition() {
-		CACTUSES_PERCENTAGE += PERCENTAGE_INC;
-		BIRDS_PERCENTAGE += PERCENTAGE_INC;
-		if(DISTANCE_BETWEEN_ENEMIES > MINIMUM_DISTANCE)
-			DISTANCE_BETWEEN_ENEMIES += DISTANCE_DESC;
-//		System.out.println(DISTANCE_BETWEEN_ENEMIES);
+		cactusesPercentage += PERCENTAGE_INC;
+		birdsPercentage += PERCENTAGE_INC;
+		if(distanceBetweenEnemies > MINIMUM_DISTANCE)
+			distanceBetweenEnemies += DISTANCE_DEC;
 		cactuses.updatePosition();
 		birds.updatePosition();
 		if(cactuses.spaceAvailable() && birds.spaceAvailable()) {
@@ -85,9 +80,9 @@ public class EnemyManager {
 		birds.draw(g);
 	}
 	
-	public void drawHitBoxes(Graphics g) {
-		cactuses.drawHitBox(g);
-		birds.drawHitBox(g);
+	public void drawHitboxes(Graphics g) {
+		cactuses.drawHitbox(g);
+		birds.drawHitbox(g);
 	}
 	
 }

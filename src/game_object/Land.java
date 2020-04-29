@@ -29,8 +29,7 @@ public class Land {
 	
 	public void updatePosition() {
 		// + SPEED_X to 2 decimal points
-		x += Math.round(gameScreen.getSPEED_X() * 100d) / 100d;
-//		System.out.println(x);
+		x += Math.round(gameScreen.getSpeedX() * 100d) / 100d;
 	}
 	
 	public void resetLand() {

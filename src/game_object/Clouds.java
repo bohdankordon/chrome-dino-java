@@ -15,7 +15,6 @@ import java.util.Set;
 
 public class Clouds {
 	
-	// class for single cloud
 	private class Cloud {
 		
 		private BufferedImage cloudImage;
@@ -57,7 +56,7 @@ public class Clouds {
 	private void isOutOfScreen() {
 		for(Iterator<Cloud> i = clouds.iterator(); i.hasNext();) {
 			Cloud cloud = (Cloud)i.next();
-			cloud.x += gameScreen.getSPEED_X() / 7;
+			cloud.x += gameScreen.getSpeedX() / 7;
 			if(cloud.x + cloudWidthScaled < 0) {
 				i.remove();
 			}
@@ -72,7 +71,6 @@ public class Clouds {
 				if(temp.x >= SCREEN_WIDTH - cloudWidthScaled)
 					return;
 			}
-			
 			if(Math.random() * 100 < CLOUD_PERCENTAGE)
 				clouds.add(new Cloud(getImage("resources/cloud.png"), SCREEN_WIDTH, (int)(Math.random() * (SCREEN_HEIGHT / 2))));
 		}
@@ -89,7 +87,7 @@ public class Clouds {
 		}
 	}
 	
-	public void drawHitBox(Graphics g) {
+	public void drawHitbox(Graphics g) {
 		g.setColor(Color.GREEN);
 		for(Iterator<Cloud> i = clouds.iterator(); i.hasNext();) {
 			Cloud cloud = (Cloud)i.next();
