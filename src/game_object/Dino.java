@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import manager.SoundManager;
 import misc.Animation;
 import misc.Controls;
+import misc.DinoState;
 
 public class Dino {
 	
@@ -22,11 +23,6 @@ public class Dino {
 	
 	public static final double X = 120;
 	
-	public static final int DINO_RUN = 0;
-	public static final int DINO_DOWN_RUN = 1;
-	public static final int DINO_JUMP = 2;
-	public static final int DINO_DEAD = 3;
-	
 	Controls controls;
 	
 	private double maxY;
@@ -35,7 +31,8 @@ public class Dino {
 	
 	private double y = 0;
 	private double speedY = 0;
-	private int dinoState;
+	
+	private DinoState dinoState;
 	private BufferedImage dinoJump;
 	private BufferedImage dinoDead;
 	private Animation dinoRun;
@@ -58,14 +55,14 @@ public class Dino {
 		maxY = y;
 		highJumpMaxY = setJumpMaxY(GRAVITY);
 		lowJumpMaxY = setJumpMaxY(GRAVITY + GRAVITY / 2);
-		dinoState = DINO_JUMP;
+		dinoState = DinoState.DINO_JUMP;
 	}
 	
-	public int getDinoState() {
+	public DinoState getDinoState() {
 		return dinoState;
 	}
 
-	public void setDinoState(int dinoState) {
+	public void setDinoState(DinoState dinoState) {
 		this.dinoState = dinoState;
 	}
 	
@@ -118,7 +115,7 @@ public class Dino {
 			if(y + speedY >= GROUND_Y - dinoRun.getSprite().getHeight()) {
 				speedY = 0;
 				y = GROUND_Y - dinoRun.getSprite().getHeight();
-				dinoState = DINO_RUN;
+				dinoState = DinoState.DINO_RUN;
 			} else if(controls.isPressedUp()) {
 				speedY += GRAVITY;
 				y += speedY;
@@ -148,13 +145,13 @@ public class Dino {
 	
 	public void resetDino() {
 		y = GROUND_Y - dinoJump.getHeight();
-		dinoState = DINO_RUN;
+		dinoState = DinoState.DINO_RUN;
 	}
 	
 	public void dinoGameOver() {
 		if(y > GROUND_Y - dinoDead.getHeight())
 			y = GROUND_Y - dinoDead.getHeight();
-		dinoState = DINO_DEAD;
+		dinoState = DinoState.DINO_DEAD;
 	}
 	
 	public void draw(Graphics g) {

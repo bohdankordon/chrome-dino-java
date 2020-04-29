@@ -2,6 +2,7 @@ package manager;
 
 import game_object.Birds;
 import game_object.Cactuses;
+import misc.EnemyType;
 import user_interface.GameScreen;
 
 import java.awt.Graphics;
@@ -13,9 +14,6 @@ public class EnemyManager {
 	private static final double PERCENTAGE_INC = 0.0001;
 	private static final double DISTANCE_DEC = -0.005;
 	private static final int MINIMUM_DISTANCE = 250;
-	
-	// number of possible enemies (cactus, birds)
-	private static final int ENEMY_TYPES = 2;
 	
 	private double distanceBetweenEnemies = 750;
 	private double cactusesPercentage = 2;
@@ -50,11 +48,11 @@ public class EnemyManager {
 		birds.updatePosition();
 		if(cactuses.spaceAvailable() && birds.spaceAvailable()) {
 			// "randomly" choosing new enemy type 
-			switch ((int)(Math.random() * ENEMY_TYPES)) {
-			case 0:
+			switch (EnemyType.values()[(int)(Math.random() * EnemyType.values().length)]) {
+			case CACTUS:
 				if(cactuses.createCactuses())
 					break;
-			case 1:
+			case BIRD:
 				if(birds.createBird())
 					break;
 			default:
@@ -70,7 +68,7 @@ public class EnemyManager {
 		return false;
 	}
 	
-	public void clearEnemies() {
+	public void clearEnemy() {
 		cactuses.clearCactuses();
 		birds.clearBirds();
 	}
@@ -80,7 +78,7 @@ public class EnemyManager {
 		birds.draw(g);
 	}
 	
-	public void drawHitboxes(Graphics g) {
+	public void drawHitbox(Graphics g) {
 		cactuses.drawHitbox(g);
 		birds.drawHitbox(g);
 	}

@@ -2,7 +2,6 @@ package game_object;
 
 import user_interface.GameScreen;
 
-import static user_interface.GameScreen.GAME_STATE_OVER;
 import static user_interface.GameWindow.SCREEN_HEIGHT;
 import static user_interface.GameWindow.SCREEN_WIDTH;
 import static util.Resource.getImage;
@@ -23,6 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import manager.SoundManager;
+import misc.GameState;
 
 public class Score {
 	
@@ -148,7 +148,7 @@ public class Score {
 		int scoreArray[] = scoreToArray(score);
 		for(int i = 0; i < SCORE_LENGTH; i++) {
 			// this if needed to make blinking animation when score increased by 100
-			if((!((int)score >= 12 && (int)score % 100 <= 12) || (int)score % 3 == 0) || gameScreen.getGameState() == GAME_STATE_OVER)
+			if((!((int)score >= 12 && (int)score % 100 <= 12) || (int)score % 3 == 0) || gameScreen.getGameState() == GameState.GAME_STATE_OVER)
 				g2d.drawImage(cropImage(numbers, scoreArray[SCORE_LENGTH - i - 1]), CURRENT_SCORE_X + i * NUMBER_WIDTH, SCORE_Y, null);
 		}
 		if(hiScore > 0) {

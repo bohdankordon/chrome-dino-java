@@ -1,8 +1,5 @@
 package user_interface;
 
-import static game_object.Dino.DINO_DOWN_RUN;
-import static game_object.Dino.DINO_JUMP;
-import static game_object.Dino.DINO_RUN;
 import static user_interface.GameWindow.SCREEN_HEIGHT;
 import static user_interface.GameWindow.SCREEN_WIDTH;
 import static util.Resource.getImage;
@@ -20,6 +17,8 @@ import manager.ControlsManager;
 import manager.EnemyManager;
 import manager.SoundManager;
 import misc.Controls;
+import misc.DinoState;
+import misc.GameState;
 
 @SuppressWarnings(value = { "serial" })
 public class GameScreen extends JPanel implements Runnable {
@@ -29,15 +28,12 @@ public class GameScreen extends JPanel implements Runnable {
 	private static final int STARTING_SPEED_X = -5;
 	private static final double DIFFICULTY_INC = -0.0002;
 	
-	public static final int GAME_STATE_START = 0;
-	public static final int GAME_STATE_IN_PROGRESS = 1;
-	public static final int GAME_STATE_OVER = 2;
 	public static final double GRAVITY = 0.4;
 	public static final int GROUND_Y = 280;
 	public static final double SPEED_Y = -12;
 	
 	private double speedX = STARTING_SPEED_X;
-	private int gameState = GAME_STATE_START;
+	private GameState gameState = GameState.GAME_STATE_START;
 	
 	private boolean showHitboxes = false;
 	private boolean collisions = true;
@@ -90,7 +86,7 @@ public class GameScreen extends JPanel implements Runnable {
 				waitingTime = 1;
 			SoundManager.WAITING_TIME = waitingTime;
 			// little pause to not start new game if you are spamming your keys
-			if(gameState == GAME_STATE_OVER)
+			if(gameState == GameState.GAME_STATE_OVER)
 				waitingTime = 1000;
 			try {
 				Thread.sleep(waitingTime);
@@ -105,7 +101,7 @@ public class GameScreen extends JPanel implements Runnable {
 		return speedX;
 	}
 
-	public int getGameState() {
+	public GameState getGameState() {
 		return gameState;
 	}
 
@@ -119,7 +115,7 @@ public class GameScreen extends JPanel implements Runnable {
 			clouds.updatePosition();
 			eManager.updatePosition();
 			if(collisions && eManager.isCollision(dino.getHitbox())) {
-				gameState = GAME_STATE_OVER;
+				gameState = GameState.GAME_STATE_OVER;
 				dino.dinoGameOver();
 				score.writeScore();
 				gameOverSound.play();
@@ -156,7 +152,7 @@ public class GameScreen extends JPanel implements Runnable {
 		g.drawLine(0, GROUND_Y, getWidth(), GROUND_Y);
 //		clouds.drawHitBox(g);
 		dino.drawHitbox(g);
-		eManager.drawHitboxes(g);
+		eManager.drawHitbox(g);
 		String speedInfo = "SPEED_X: " + String.valueOf(Math.round(speedX * 1000D) / 1000D);
 		g.drawString(speedInfo, (int)(SCREEN_WIDTH / 100), (int)(SCREEN_HEIGHT / 25));
 	}
@@ -185,34 +181,34 @@ public class GameScreen extends JPanel implements Runnable {
 	}
 	
 	public void pressUpAction() {
-		if(gameState == GAME_STATE_IN_PROGRESS) {
+		if(gameState == GameState.GAME_STATE_IN_PROGRESS) {
 			dino.jump();
-			dino.setDinoState(DINO_JUMP);
+			dino.setDinoState(DinoState.DINO_JUMP);
 		}
 	}
 	
 	public void releaseUpAction() {
-		if(gameState == GAME_STATE_START)
-			gameState = GAME_STATE_IN_PROGRESS;
-		if(gameState == GAME_STATE_OVER) {
+		if(gameState == GameState.GAME_STATE_START)
+			gameState = GameState.GAME_STATE_IN_PROGRESS;
+		if(gameState == GameState.GAME_STATE_OVER) {
 			speedX = STARTING_SPEED_X;
 			score.scoreReset();
-			eManager.clearEnemies();
+			eManager.clearEnemy();
 			dino.resetDino();
 			clouds.clearClouds();
 			land.resetLand();
-			gameState = GAME_STATE_IN_PROGRESS;
+			gameState = GameState.GAME_STATE_IN_PROGRESS;
 		}
 	}
 	
 	public void pressDownAction() {
-		if(dino.getDinoState() != DINO_JUMP && gameState == GAME_STATE_IN_PROGRESS)
-			dino.setDinoState(DINO_DOWN_RUN);
+		if(dino.getDinoState() != DinoState.DINO_JUMP && gameState == GameState.GAME_STATE_IN_PROGRESS)
+			dino.setDinoState(DinoState.DINO_DOWN_RUN);
 	}
 	
 	public void releaseDownAction() {
-		if(dino.getDinoState() != DINO_JUMP && gameState == GAME_STATE_IN_PROGRESS)
-			dino.setDinoState(DINO_RUN);
+		if(dino.getDinoState() != DinoState.DINO_JUMP && gameState == GameState.GAME_STATE_IN_PROGRESS)
+			dino.setDinoState(DinoState.DINO_RUN);
 	}
 	
 	public void pressDebugAction() {
