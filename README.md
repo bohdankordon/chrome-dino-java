@@ -18,12 +18,14 @@ A Java version of Chrome Offline T-Rex Game. Some features not affecting gamepla
   - Score & High Score _( File R/W )_
   - Dynamic jump height based on key holding time
   - Quick fall, pressed duck key in midair will drop Dino faster
+  - Pause
   - **MORE SOON**
 
 ## Keybinds
 **Jump: `ARROW UP`, `SPACE`, `W`** <br/>
 **Duck: `ARROW DOWN`, `S`** <br/>
-**Debug: <code>`(backtick)</code>**
+**Debug: <code>\`(backtick)</code>** <br/>
+**Pause: `ESC`, `P`**
 
 ## Additional Information
 Possible creation of ".jar" file. Highest Scores will be stored in ".txt" file right next to ".jar" file
