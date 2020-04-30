@@ -19,6 +19,7 @@ A Java version of Chrome Offline T-Rex Game. Some features not affecting gamepla
   - Dynamic jump height based on key holding time
   - Quick fall, pressed duck key in midair will drop Dino faster
   - Pause
+  - Intro
   - **MORE SOON**
 
 ## Keybinds
