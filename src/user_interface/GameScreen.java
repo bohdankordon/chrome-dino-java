@@ -4,8 +4,10 @@ import static user_interface.GameWindow.SCREEN_HEIGHT;
 import static user_interface.GameWindow.SCREEN_WIDTH;
 import static util.Resource.getImage;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
@@ -37,6 +39,8 @@ public class GameScreen extends JPanel implements Runnable {
 	
 	private double speedX = STARTING_SPEED_X;
 	private GameState gameState = GameState.GAME_STATE_START;	
+	private int introCountdown = 1000;
+	private boolean introJump = true;
 	private boolean showHitboxes = false;
 	private boolean collisions = true;
 	
@@ -109,6 +113,20 @@ public class GameScreen extends JPanel implements Runnable {
 	// update all entities positions
 	private void updateFrame() {
 		switch (gameState) {
+		case GAME_STATE_INTRO:
+			dino.updatePosition();
+			if(!introJump && dino.getDinoState() == DinoState.DINO_RUN)
+				land.updatePosition();
+			clouds.updatePosition();
+			introCountdown += speedX;
+			if(introCountdown <= 0)
+				gameState = GameState.GAME_STATE_IN_PROGRESS;
+			if(introJump) {
+				dino.jump();
+				dino.setDinoState(DinoState.DINO_JUMP);
+				introJump = false;
+			}
+			break;
 		case GAME_STATE_IN_PROGRESS:
 			speedX += DIFFICULTY_INC;
 			dino.updatePosition();
@@ -137,6 +155,9 @@ public class GameScreen extends JPanel implements Runnable {
 		case GAME_STATE_START:
 			startScreen(g);
 			break;
+		case GAME_STATE_INTRO:
+			introScreen(g);
+			break;
 		case GAME_STATE_IN_PROGRESS:
 			inProgressScreen(g);
 			break;
@@ -164,6 +185,16 @@ public class GameScreen extends JPanel implements Runnable {
 	private void startScreen(Graphics g) {
 		land.draw(g);
 		dino.draw(g);
+		BufferedImage introImage = getImage("resources/intro-text.png");
+		Graphics2D g2d = (Graphics2D)g;
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, introCountdown / 1000f));
+		g2d.drawImage(introImage, SCREEN_WIDTH / 2 - introImage.getWidth() / 2, SCREEN_HEIGHT / 2 - introImage.getHeight(), null);
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+	}
+	
+	private void introScreen(Graphics g) {
+		clouds.draw(g);
+		startScreen(g);
 	}
 	
 	private void inProgressScreen(Graphics g) {
@@ -199,7 +230,7 @@ public class GameScreen extends JPanel implements Runnable {
 	
 	public void releaseUpAction() {
 		if(gameState == GameState.GAME_STATE_START)
-			gameState = GameState.GAME_STATE_IN_PROGRESS;
+			gameState = GameState.GAME_STATE_INTRO;
 		if(gameState == GameState.GAME_STATE_OVER) {
 			speedX = STARTING_SPEED_X;
 			score.scoreReset();
