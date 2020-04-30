@@ -3,6 +3,8 @@ package util;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -42,6 +44,11 @@ public class Resource {
 	    	e.printStackTrace();
 	    }
 		return clip;
+	}
+	
+	public static boolean isJar() {
+		Matcher m = Pattern.compile("^file:").matcher(ClassLoader.getSystemClassLoader().getResource("").toString());
+		return !m.find();
 	}
 	
 }

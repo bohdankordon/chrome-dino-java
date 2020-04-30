@@ -38,7 +38,7 @@ public class GameScreen extends JPanel implements Runnable {
 	private final int NS_PER_FRAME = 1_000_000_000 / FPS;
 	
 	private double speedX = STARTING_SPEED_X;
-	private GameState gameState = GameState.GAME_STATE_START;	
+	private GameState gameState = GameState.GAME_STATE_START;
 	private int introCountdown = 1000;
 	private boolean introJump = true;
 	private boolean showHitboxes = false;

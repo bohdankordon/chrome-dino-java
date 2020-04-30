@@ -5,6 +5,7 @@ import user_interface.GameScreen;
 import static user_interface.GameWindow.SCREEN_HEIGHT;
 import static user_interface.GameWindow.SCREEN_WIDTH;
 import static util.Resource.getImage;
+import static util.Resource.isJar;
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics;
@@ -130,11 +131,6 @@ public class Score {
 			}
 		} else
 			hiScore = (int)score;
-	}
-	
-	private boolean isJar() {
-		Matcher m = Pattern.compile("^file:").matcher(this.getClass().getResource("Score.class").toString());
-		return !m.find();
 	}
 	
 	public void scoreReset() {
